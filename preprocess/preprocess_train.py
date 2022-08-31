@@ -88,8 +88,10 @@ if __name__ == '__main__':
     # 是否过采样
     if args.sample_size > 0:
         print(f"sample data with sample size: {args.sample_size}")
-        df = df.groupby('意图').apply(lambda x: x.sample(n=args.sample_size) if len(x) >= args.sample_size else x.sample(n=args.sample_size, replace=True)).reset_index(drop=True)
-        train_df = train_df.groupby('意图').apply(lambda x: x.sample(n=args.sample_size) if len(x) >= args.sample_size else x.sample(n=args.sample_size, replace=True)).reset_index(drop=True)
+        df = df.groupby('意图').apply(
+            lambda x: x.sample(n=args.sample_size, random_state=args.seed) if len(x) >= args.sample_size else x.sample(n=args.sample_size, replace=True, random_state=args.seed)).reset_index(drop=True)
+        train_df = train_df.groupby('意图').apply(
+            lambda x: x.sample(n=args.sample_size, random_state=args.seed) if len(x) >= args.sample_size else x.sample(n=args.sample_size, replace=True, random_state=args.seed)).reset_index(drop=True)
 
         print_df_statics(df, "df after sample")
         print_df_statics(train_df, "train df after sample")
