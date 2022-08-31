@@ -90,11 +90,12 @@ if __name__ == '__main__':
         print(f"sample data with sample size: {args.sample_size}")
         df = df.groupby('意图').apply(
             lambda x: x.sample(n=args.sample_size, random_state=args.seed) if len(x) >= args.sample_size else x.sample(n=args.sample_size, replace=True, random_state=args.seed)).reset_index(drop=True)
-        train_df = train_df.groupby('意图').apply(
-            lambda x: x.sample(n=args.sample_size, random_state=args.seed) if len(x) >= args.sample_size else x.sample(n=args.sample_size, replace=True, random_state=args.seed)).reset_index(drop=True)
-
         print_df_statics(df, "df after sample")
-        print_df_statics(train_df, "train df after sample")
+        if train_df is not None:
+            train_df = train_df.groupby('意图').apply(
+                lambda x: x.sample(n=args.sample_size, random_state=args.seed) if len(x) >= args.sample_size else x.sample(n=args.sample_size, replace=True, random_state=args.seed)).reset_index(
+                drop=True)
+            print_df_statics(train_df, "train df after sample")
     # 保存划分结果
     print(f"write all.csv")
     df.to_csv(os.path.join(base_dir, 'all.csv'), sep='\t', index=False)
