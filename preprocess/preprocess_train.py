@@ -15,6 +15,7 @@ def read_df(filepath):
         raise TypeError(f'input file [{filepath}] type not support! ')
     df = df.iloc[:, [0, 1]]
     df.columns = ['意图', '话术']
+    df['话术'] = df['话术'].apply(lambda x: x.replace('\n', ''))
     return df
 
 
@@ -98,10 +99,10 @@ if __name__ == '__main__':
             print_df_statics(train_df, "train df after sample")
     # 保存划分结果
     print(f"write all.csv")
-    df.to_csv(os.path.join(base_dir, 'all.csv'), sep='\t', index=False)
+    df[['意图', '话术']].to_csv(os.path.join(base_dir, 'all.csv'), sep='\t', index=False)
     if train_df is not None:
         print(f"write train.csv")
-        train_df.to_csv(os.path.join(base_dir, 'train.csv'), sep='\t', index=False)
+        train_df[['意图', '话术']].to_csv(os.path.join(base_dir, 'train.csv'), sep='\t', index=False)
         print(f"write test csv")
     if test_df is not None:
-        test_df.to_csv(os.path.join(base_dir, 'test.csv'), sep='\t', index=False)
+        test_df[['意图', '话术']].to_csv(os.path.join(base_dir, 'test.csv'), sep='\t', index=False)
